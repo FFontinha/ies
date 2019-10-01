@@ -13,6 +13,8 @@ public class GetWeatherForCity
 
     public static void main(String[] args) {
 
+        //String code = "1010500";
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.ipma.pt/open-data/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -24,9 +26,10 @@ public class GetWeatherForCity
         try {
             Response<IpmaCityForecast> apiResponse = callSync.execute();
             IpmaCityForecast forecast = apiResponse.body();
+            CityForecast cityForecast = forecast.getData().listIterator().next();
 
-            System.out.println( "forecast is: " + forecast.getData().
-                    listIterator().next().getTMax());
+            System.out.printf( "Data : %s \nTemperatura minima: %s \nTemperatura máxima: %s \nProb. Precipitação: %s\n",
+                    cityForecast.getForecastDate(), cityForecast.getTMin(), cityForecast.getTMax(), cityForecast.getPrecipitaProb());
 
         } catch (Exception ex) {
             ex.printStackTrace();
